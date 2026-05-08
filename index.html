@@ -229,7 +229,7 @@
                 </div>
             </div>
             <div class="hero-counters">
-                <div class="hero-stat"><span class="stat-num" data-target="94">0</span><span class="stat-label">Web App<br>Studenti & Docenti</span></div>
+                <div class="hero-stat"><span class="stat-num" data-target="96">0</span><span class="stat-label">Web App<br>Studenti & Docenti</span></div>
                 <div class="hero-stat"><span class="stat-num" data-target="15">0</span><span class="stat-label">Strumenti<br>Area Riservata</span></div>
                 <div class="hero-stat"><span class="stat-num" data-target="3">0</span><span class="stat-label">Web App<br>Genitori</span></div>
                 <div class="hero-stat hero-update"><span class="stat-num" id="dayNum"></span><span class="stat-label" id="dateLabel"></span></div>
@@ -434,7 +434,7 @@
 
         <!-- ══════ BIBLIOTECA DIGITALE ══════ -->
         <div class="card" data-theme="biblioteca" data-category="biblioteca">
-            <div class="card-head"><div class="card-emoji"><i class="ti ti-headphones"></i></div><div class="card-info"><div class="card-name">Biblioteca Digitale</div><span class="card-badge">16 risorse</span></div></div>
+            <div class="card-head"><div class="card-emoji"><i class="ti ti-headphones"></i></div><div class="card-info"><div class="card-name">Biblioteca Digitale</div><span class="card-badge">17 risorse</span></div></div>
             <ul class="card-list">
                 <li><a href="https://harrypotter-1.vercel.app/" target="_blank">
                     <span class="link-num"></span>
@@ -514,6 +514,11 @@
                 <li><a href="https://lost-in-translation-phi.vercel.app/" target="_blank">
                     <span class="link-num"></span>
                     <span class="link-text"><span class="link-name"><i class="ti ti-language"></i> Lost in Translation</span><span class="link-desc">English idioms from real songs: impara le espressioni inglesi attraverso la musica</span></span>
+                    <span class="link-go">→</span>
+                </a></li>
+                <li><a href="https://la-macchina-per-fare-i-compiti.vercel.app/" target="_blank">
+                    <span class="link-num"></span>
+                    <span class="link-text"><span class="link-name"><i class="ti ti-robot"></i> La Macchina per Fare i Compiti</span><span class="link-desc">Riflessione critica sull'uso dell'AI: quando aiuta davvero e quando ci sostituisce</span></span>
                     <span class="link-go">→</span>
                 </a></li>
             </ul>
@@ -734,7 +739,7 @@
 
         <!-- ══════ SPORT E GIOCHI ══════ -->
         <div class="card" data-theme="sport" data-category="sport">
-            <div class="card-head"><div class="card-emoji"><i class="ti ti-trophy"></i></div><div class="card-info"><div class="card-name">Sport e Giochi</div><span class="card-badge">10 risorse</span></div></div>
+            <div class="card-head"><div class="card-emoji"><i class="ti ti-trophy"></i></div><div class="card-info"><div class="card-name">Sport e Giochi</div><span class="card-badge">11 risorse</span></div></div>
             <ul class="card-list">
                 <li><a href="https://studiomusicale.neocities.org/" target="_blank">
                     <span class="link-num"></span>
@@ -784,6 +789,11 @@
                 <li><a href="https://masterchef-iota.vercel.app/" target="_blank">
                     <span class="link-num"></span>
                     <span class="link-text"><span class="link-name">Master Chef</span><span class="link-desc">Ricette italiane: un viaggio tra sapori e tradizioni</span></span>
+                    <span class="link-go">→</span>
+                </a></li>
+                <li><a href="https://euro-capitali.vercel.app/" target="_blank">
+                    <span class="link-num"></span>
+                    <span class="link-text"><span class="link-name"><i class="ti ti-map-pin"></i> Euro Capitali</span><span class="link-desc">Sfida geografica: riconosci le capitali europee e mettiti alla prova</span></span>
                     <span class="link-go">→</span>
                 </a></li>
             </ul>
@@ -1242,5 +1252,288 @@
         }
     </script>
 <script src="dpia-badges.js" defer></script>
+
+<!-- ============================================================
+     REGISTRO LEZIONI — modal di tracciamento (inizio)
+     Intercetta i click sulle card delle webapp esterne, mostra
+     un modal con data/ora/classe pre-selezionata in base
+     all'orario fisso, e logga la sessione su Google Sheet.
+     ============================================================ -->
+<style>
+  .reg-backdrop{
+    position:fixed; inset:0;
+    background:rgba(13, 35, 26, .55);
+    backdrop-filter:blur(3px);
+    display:none; align-items:center; justify-content:center;
+    z-index:9999;
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+  }
+  .reg-backdrop.show{display:flex}
+  .reg-modal{
+    background:#fff;
+    width:min(92vw, 460px);
+    border-radius:14px;
+    padding:26px 28px 22px;
+    box-shadow:0 18px 48px rgba(13,35,26,.35);
+    border-top:4px solid #1B6D3F;
+  }
+  .reg-modal h2{
+    margin:0 0 4px; font-size:14px; letter-spacing:.04em;
+    text-transform:uppercase; color:#1B6D3F; font-weight:600;
+  }
+  .reg-app-title{
+    font-size:22px; font-weight:600; color:#0d231a;
+    margin:0 0 18px; line-height:1.25;
+  }
+  .reg-row{
+    display:flex; align-items:center; gap:12px;
+    padding:10px 0; border-top:1px solid #e8efe9;
+  }
+  .reg-row:first-of-type{border-top:none}
+  .reg-row label{
+    font-size:13px; color:#536b5f; min-width:78px; font-weight:500;
+  }
+  .reg-row .reg-value{
+    font-size:15px; color:#0d231a; font-weight:500;
+  }
+  .reg-row select{
+    flex:1; padding:9px 12px; border:1.5px solid #c8d4cc;
+    border-radius:8px; font-size:15px; background:#fff;
+    font-family:inherit; color:#0d231a;
+  }
+  .reg-row select:focus{outline:none; border-color:#1B6D3F}
+  .reg-actions{
+    display:flex; gap:10px; margin-top:18px; justify-content:flex-end;
+  }
+  .reg-btn{
+    padding:11px 20px; border:none; border-radius:8px;
+    font-size:15px; font-weight:600; cursor:pointer;
+    font-family:inherit; transition:all .15s;
+  }
+  .reg-btn-cancel{
+    background:#f3f5f4; color:#536b5f;
+  }
+  .reg-btn-cancel:hover{background:#e8efe9}
+  .reg-btn-confirm{
+    background:#1B6D3F; color:#fff;
+  }
+  .reg-btn-confirm:hover{background:#155832}
+  .reg-toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+    background:#1B6D3F; color:#fff; padding:12px 22px; border-radius:8px;
+    font-family:'IBM Plex Sans', system-ui, sans-serif; font-weight:500;
+    box-shadow:0 8px 24px rgba(13,35,26,.25);
+    opacity:0; transition:opacity .25s; z-index:10000; pointer-events:none;
+  }
+  .reg-toast.show{opacity:1}
+</style>
+
+<div class="reg-backdrop" id="regBackdrop" role="dialog" aria-modal="true">
+  <div class="reg-modal">
+    <h2>Registra lezione</h2>
+    <p class="reg-app-title" id="regAppTitle">—</p>
+
+    <div class="reg-row">
+      <label>Data</label>
+      <span class="reg-value" id="regDate">—</span>
+    </div>
+    <div class="reg-row">
+      <label>Ora</label>
+      <span class="reg-value" id="regTime">—</span>
+    </div>
+    <div class="reg-row">
+      <label for="regClasse">Classe</label>
+      <select id="regClasse"></select>
+    </div>
+
+    <div class="reg-actions">
+      <button class="reg-btn reg-btn-cancel" id="regCancel">Annulla</button>
+      <button class="reg-btn reg-btn-confirm" id="regConfirm">Conferma e apri</button>
+    </div>
+  </div>
+</div>
+<div class="reg-toast" id="regToast">Registrato</div>
+
+<script>
+(function(){
+  'use strict';
+
+  const REGISTRO_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwOIxvpNEQnOr-TQTqzMycue8D8BN2Ths81ewTjAG7junkAeDhd26mBHsPlc5S3c-hE/exec';
+
+  // Orario fisso settimanale (1=Lun ... 5=Ven)
+  const ORARIO = {
+    1: [
+      { from:'08:00', to:'09:05', id:'SEC_1B', label:'1B Secondaria' },
+      { from:'09:05', to:'09:55', id:'SEC_3A', label:'3A Secondaria' },
+      { from:'09:55', to:'11:00', id:'SEC_2C', label:'2C Secondaria' },
+      { from:'11:00', to:'11:50', id:'PRIM_2A', label:'2A Primaria' },
+      { from:'11:50', to:'13:00', id:'PRIM_2B', label:'2B Primaria' }
+    ],
+    2: [
+      { from:'08:00', to:'09:05', id:'SEC_1C', label:'1C Secondaria' },
+      { from:'09:05', to:'09:55', id:'SEC_2A', label:'2A Secondaria' },
+      { from:'09:55', to:'11:00', id:'SEC_2B', label:'2B Secondaria' },
+      { from:'11:00', to:'11:50', id:'PRIM_1B', label:'1B Primaria' },
+      { from:'11:50', to:'13:00', id:'PRIM_1A', label:'1A Primaria' }
+    ],
+    3: [
+      { from:'08:00', to:'09:05', id:'PRIM_5A', label:'5A Primaria' },
+      { from:'09:05', to:'09:55', id:'SEC_3C', label:'3C Secondaria' },
+      { from:'09:55', to:'11:00', id:'PRIM_5B', label:'5B Primaria' },
+      { from:'11:00', to:'11:50', id:'SEC_1A', label:'1A Secondaria' },
+      { from:'11:50', to:'13:00', id:'SEC_3B', label:'3B Secondaria' }
+    ],
+    4: [
+      { from:'08:00', to:'09:55', id:'PRIM_4A', label:'4A Primaria' },
+      { from:'09:55', to:'11:00', id:'PRIM_4B', label:'4B Primaria' }
+    ],
+    5: [
+      { from:'08:00', to:'09:55', id:'PRIM_3A', label:'3A Primaria' },
+      { from:'09:55', to:'11:00', id:'PRIM_3B', label:'3B Primaria' }
+    ]
+  };
+
+  const CLASSI_TUTTE = [
+    { id:'PRIM_1A', label:'1A Primaria' }, { id:'PRIM_1B', label:'1B Primaria' },
+    { id:'PRIM_2A', label:'2A Primaria' }, { id:'PRIM_2B', label:'2B Primaria' },
+    { id:'PRIM_3A', label:'3A Primaria' }, { id:'PRIM_3B', label:'3B Primaria' },
+    { id:'PRIM_4A', label:'4A Primaria' }, { id:'PRIM_4B', label:'4B Primaria' },
+    { id:'PRIM_5A', label:'5A Primaria' }, { id:'PRIM_5B', label:'5B Primaria' },
+    { id:'SEC_1A', label:'1A Secondaria' }, { id:'SEC_1B', label:'1B Secondaria' }, { id:'SEC_1C', label:'1C Secondaria' },
+    { id:'SEC_2A', label:'2A Secondaria' }, { id:'SEC_2B', label:'2B Secondaria' }, { id:'SEC_2C', label:'2C Secondaria' },
+    { id:'SEC_3A', label:'3A Secondaria' }, { id:'SEC_3B', label:'3B Secondaria' }, { id:'SEC_3C', label:'3C Secondaria' }
+  ];
+
+  const GIORNI_LABEL = ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function fmtDate(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function fmtTime(d){ return pad(d.getHours())+':'+pad(d.getMinutes()); }
+  function fmtDateLabel(d){
+    return GIORNI_LABEL[d.getDay()]+' '+pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear();
+  }
+  function timeToMin(hhmm){ const [h,m] = hhmm.split(':').map(Number); return h*60+m; }
+
+  function classeFromNow(d){
+    const giorno = d.getDay();
+    const oraMin = d.getHours()*60 + d.getMinutes();
+    const slots = ORARIO[giorno];
+    if (!slots) return null;
+    for (const s of slots){
+      if (oraMin >= timeToMin(s.from) && oraMin < timeToMin(s.to)) return s.id;
+    }
+    return null;
+  }
+
+  function buildClassiDropdown(preselectId){
+    const sel = document.getElementById('regClasse');
+    sel.innerHTML = '';
+    const ogPrim = document.createElement('optgroup'); ogPrim.label='Primaria';
+    const ogSec  = document.createElement('optgroup'); ogSec.label='Secondaria';
+    CLASSI_TUTTE.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id; opt.textContent = c.label;
+      if (c.id === preselectId) opt.selected = true;
+      (c.id.startsWith('PRIM_') ? ogPrim : ogSec).appendChild(opt);
+    });
+    sel.appendChild(ogPrim); sel.appendChild(ogSec);
+  }
+
+  function extractTitle(a){
+    const h = a.querySelector('h1,h2,h3,h4,h5,strong,b,.title,.card-title');
+    if (h && h.innerText.trim()) return h.innerText.trim();
+    const txt = (a.innerText || a.textContent || '').trim();
+    return txt.split('\n')[0].replace(/→\s*$/,'').trim() || 'Senza titolo';
+  }
+
+  function logSession(payload){
+    const qs = Object.keys(payload).map(k =>
+      encodeURIComponent(k)+'='+encodeURIComponent(payload[k]||'')
+    ).join('&');
+    const img = new Image();
+    img.src = REGISTRO_ENDPOINT + '?action=log&' + qs;
+  }
+
+  function toast(msg){
+    const t = document.getElementById('regToast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2000);
+  }
+
+  let pendingUrl = null;
+  let pendingTitle = null;
+
+  function openModal(a, href){
+    const now = new Date();
+    pendingUrl = href;
+    pendingTitle = extractTitle(a);
+
+    document.getElementById('regAppTitle').textContent = pendingTitle;
+    document.getElementById('regDate').textContent = fmtDateLabel(now);
+    document.getElementById('regTime').textContent = fmtTime(now);
+    buildClassiDropdown(classeFromNow(now));
+
+    document.getElementById('regBackdrop').classList.add('show');
+  }
+
+  function closeModal(){
+    document.getElementById('regBackdrop').classList.remove('show');
+    pendingUrl = null; pendingTitle = null;
+  }
+
+  document.body.addEventListener('click', function(e){
+    const a = e.target.closest('a');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    if (!href) return;
+    if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('javascript:')) return;
+    if (a.hasAttribute('data-no-track')) return;
+    let url;
+    try { url = new URL(href, location.href); } catch(_){ return; }
+    if (url.hostname === location.hostname) return; // skip risorse interne
+    e.preventDefault();
+    openModal(a, url.href);
+  });
+
+  document.getElementById('regConfirm').addEventListener('click', function(){
+    if (!pendingUrl) return;
+    const now = new Date();
+    const sel = document.getElementById('regClasse');
+    const classeId = sel.value;
+    const classeLabel = sel.options[sel.selectedIndex].text;
+    let host = '';
+    try { host = new URL(pendingUrl).hostname; } catch(_){}
+
+    logSession({
+      data: fmtDate(now),
+      ora: fmtTime(now),
+      giorno: GIORNI_LABEL[now.getDay()],
+      classe_id: classeId,
+      classe_label: classeLabel,
+      webapp_titolo: pendingTitle,
+      webapp_url: pendingUrl,
+      webapp_host: host
+    });
+
+    const url = pendingUrl;
+    closeModal();
+    toast('Registrato — apro la webapp');
+    setTimeout(()=>window.open(url, '_blank', 'noopener'), 150);
+  });
+
+  document.getElementById('regCancel').addEventListener('click', closeModal);
+  document.getElementById('regBackdrop').addEventListener('click', function(e){
+    if (e.target.id === 'regBackdrop') closeModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeModal();
+  });
+
+})();
+</script>
+<!-- ============================================================
+     REGISTRO LEZIONI — modal di tracciamento (fine)
+     ============================================================ -->
+
 </body>
 </html>
