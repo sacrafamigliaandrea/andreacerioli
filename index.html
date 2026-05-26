@@ -44,8 +44,8 @@
         .hero-stat .stat-num { font-family: 'DM Sans', sans-serif; font-size: 2rem; font-weight: 800; color: rgba(255,255,255,0.4); line-height: 1; letter-spacing: -0.03em; }
         .hero-stat .stat-label { font-family: 'DM Sans', sans-serif; font-size: .55rem; font-weight: 600; color: rgba(255,255,255,0.35); line-height: 1.3; text-transform: uppercase; letter-spacing: 0.04em; }
         .hero-update { }
-        .hero-survey { position: absolute; right: 3%; top: 50%; transform: translateY(-50%); z-index: 3; display: flex; gap: .6rem; align-items: stretch; animation: fadeUp .7s cubic-bezier(.16,1,.3,1) .5s both; }
-        .hero-survey a { display: flex; flex-direction: column; justify-content: center; text-align: center; text-decoration: none; padding: .5rem 1.2rem; background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.3); border-radius: 12px; backdrop-filter: blur(8px); transition: all .3s ease; }
+        .hero-survey { position: absolute; right: 3%; top: 50%; transform: translateY(-50%); z-index: 3; display: flex; gap: .6rem; align-items: center; animation: fadeUp .7s cubic-bezier(.16,1,.3,1) .5s both; }
+        .hero-survey a { display: inline-block; text-decoration: none; text-align: center; padding: .5rem 1.2rem; background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.3); border-radius: 12px; backdrop-filter: blur(8px); transition: all .3s ease; }
         .hero-survey a:hover { background: rgba(255,255,255,0.35); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.15); }
         .hero-survey .survey-title { font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 800; color: #fff; letter-spacing: 0.02em; }
         .hero-survey .survey-sub { font-family: 'DM Sans', sans-serif; font-size: .6rem; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.05em; margin-top: .15rem; }
@@ -229,8 +229,8 @@
                 </div>
             </div>
             <div class="hero-counters">
-                <div class="hero-stat"><span class="stat-num" data-target="96">0</span><span class="stat-label">Web App<br>Studenti & Docenti</span></div>
-                <div class="hero-stat"><span class="stat-num" data-target="15">0</span><span class="stat-label">Strumenti<br>Area Riservata</span></div>
+                <div class="hero-stat"><span class="stat-num" data-target="99">0</span><span class="stat-label">Web App<br>Studenti & Docenti</span></div>
+                <div class="hero-stat"><span class="stat-num" data-target="19">0</span><span class="stat-label">Strumenti<br>Area Riservata</span></div>
                 <div class="hero-stat"><span class="stat-num" data-target="3">0</span><span class="stat-label">Web App<br>Genitori</span></div>
                 <div class="hero-stat hero-update"><span class="stat-num" id="dayNum"></span><span class="stat-label" id="dateLabel"></span></div>
             </div>
@@ -438,7 +438,7 @@
 
         <!-- ══════ BIBLIOTECA DIGITALE ══════ -->
         <div class="card" data-theme="biblioteca" data-category="biblioteca">
-            <div class="card-head"><div class="card-emoji"><i class="ti ti-headphones"></i></div><div class="card-info"><div class="card-name">Biblioteca Digitale</div><span class="card-badge">17 risorse</span></div></div>
+            <div class="card-head"><div class="card-emoji"><i class="ti ti-headphones"></i></div><div class="card-info"><div class="card-name">Biblioteca Digitale</div><span class="card-badge">16 risorse</span></div></div>
             <ul class="card-list">
                 <li><a href="https://harrypotter-1.vercel.app/" target="_blank">
                     <span class="link-num"></span>
@@ -520,17 +520,12 @@
                     <span class="link-text"><span class="link-name"><i class="ti ti-language"></i> Lost in Translation</span><span class="link-desc">English idioms from real songs: impara le espressioni inglesi attraverso la musica</span></span>
                     <span class="link-go">→</span>
                 </a></li>
-                <li><a href="https://la-macchina-per-fare-i-compiti.vercel.app/" target="_blank">
-                    <span class="link-num"></span>
-                    <span class="link-text"><span class="link-name"><i class="ti ti-robot"></i> La Macchina per Fare i Compiti</span><span class="link-desc">Riflessione critica sull'uso dell'AI: quando aiuta davvero e quando ci sostituisce</span></span>
-                    <span class="link-go">→</span>
-                </a></li>
             </ul>
         </div>
 
         <!-- ══════ INFORMATICA & TECH ══════ -->
         <div class="card" data-theme="tech" data-category="tech">
-            <div class="card-head"><div class="card-emoji"><i class="ti ti-device-laptop"></i></div><div class="card-info"><div class="card-name">Informatica & Tech</div><span class="card-badge">12 risorse</span></div></div>
+            <div class="card-head"><div class="card-emoji"><i class="ti ti-device-laptop"></i></div><div class="card-info"><div class="card-name">Informatica & Tech</div><span class="card-badge">15 risorse</span></div></div>
             <ul class="card-list">
                 <li><a href="https://fakehunter.neocities.org/" target="_blank">
                     <span class="link-num"></span>
@@ -590,6 +585,21 @@
                 <li><a href="https://indirizzo-url.vercel.app/" target="_blank">
                     <span class="link-num"></span>
                     <span class="link-text"><span class="link-name">L'Indirizzo Digitale</span><span class="link-desc">Come funziona Internet? Scopri il WWW, i browser, i server e il linguaggio del web</span></span>
+                    <span class="link-go">→</span>
+                </a></li>
+                <li><a href="https://bottega-delle-app.vercel.app/" target="_blank">
+                    <span class="link-num"></span>
+                    <span class="link-text"><span class="link-name">La Bottega delle App</span><span class="link-desc">Si entra, si prova, si impara facendo: gli strumenti digitali come mestiere</span></span>
+                    <span class="link-go">→</span>
+                </a></li>
+                <li><a href="https://family-dash-two.vercel.app/" target="_blank">
+                    <span class="link-num"></span>
+                    <span class="link-text"><span class="link-name">FamilyDash</span><span class="link-desc">Un mese, giorno per giorno: quattro settimane nella vita di una famiglia</span></span>
+                    <span class="link-go">→</span>
+                </a></li>
+                <li><a href="https://dopamina-loop.vercel.app/" target="_blank">
+                    <span class="link-num"></span>
+                    <span class="link-text"><span class="link-name">Mystery Drop</span><span class="link-desc">Una partita veloce che svela il meccanismo del loop della dopamina</span></span>
                     <span class="link-go">→</span>
                 </a></li>
             </ul>
@@ -743,7 +753,7 @@
 
         <!-- ══════ SPORT E GIOCHI ══════ -->
         <div class="card" data-theme="sport" data-category="sport">
-            <div class="card-head"><div class="card-emoji"><i class="ti ti-trophy"></i></div><div class="card-info"><div class="card-name">Sport e Giochi</div><span class="card-badge">11 risorse</span></div></div>
+            <div class="card-head"><div class="card-emoji"><i class="ti ti-trophy"></i></div><div class="card-info"><div class="card-name">Sport e Giochi</div><span class="card-badge">10 risorse</span></div></div>
             <ul class="card-list">
                 <li><a href="https://studiomusicale.neocities.org/" target="_blank">
                     <span class="link-num"></span>
@@ -793,11 +803,6 @@
                 <li><a href="https://masterchef-iota.vercel.app/" target="_blank">
                     <span class="link-num"></span>
                     <span class="link-text"><span class="link-name">Master Chef</span><span class="link-desc">Ricette italiane: un viaggio tra sapori e tradizioni</span></span>
-                    <span class="link-go">→</span>
-                </a></li>
-                <li><a href="https://euro-capitali.vercel.app/" target="_blank">
-                    <span class="link-num"></span>
-                    <span class="link-text"><span class="link-name"><i class="ti ti-map-pin"></i> Euro Capitali</span><span class="link-desc">Sfida geografica: riconosci le capitali europee e mettiti alla prova</span></span>
                     <span class="link-go">→</span>
                 </a></li>
             </ul>
@@ -1256,7 +1261,5 @@
         }
     </script>
 <script src="dpia-badges.js" defer></script>
-
-
 </body>
 </html>
