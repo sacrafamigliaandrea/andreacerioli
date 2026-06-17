@@ -536,6 +536,14 @@
   "https://usa-la-testa.vercel.app": {
     "cluster": "D",
     "name": "Usa la Testa"
+  },
+  "https://quadriappesi.vercel.app": {
+    "cluster": "D",
+    "name": "Quadri Appesi"
+  },
+  "https://acquedotto-mini.vercel.app/index.html": {
+    "cluster": "D",
+    "name": "Acquedotto Mini"
   }
 };
   
